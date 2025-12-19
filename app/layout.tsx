@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Thu Ngân làm cây noel tặng các chị nhé !!!",
+  title: "Merry Christmas !",
   description: "A luxurious Christmas.",
 };
 
