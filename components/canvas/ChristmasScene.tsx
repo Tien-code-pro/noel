@@ -33,8 +33,7 @@ function GalaxyTree() {
 
             positions.set([x, y, z], i * 3)
 
-            // 🎨 Gradient màu theo chiều cao (gốc ấm → đỉnh sáng)
-            const h = (height + 3) / 6 // 0 → 1
+            const h = (height + 3) / 6
             const color = new THREE.Color()
             color.setHSL(0.12 + h * 0.08, 1, 0.6)
 
@@ -50,7 +49,7 @@ function GalaxyTree() {
 
     return (
         <group>
-            {/* Thân cây mờ tạo khối */}
+            {/* Thân cây */}
             <mesh>
                 <coneGeometry args={[0.7, 6.2, 32]} />
                 <meshStandardMaterial
@@ -61,7 +60,7 @@ function GalaxyTree() {
                 />
             </mesh>
 
-            {/* Sao đỉnh cây */}
+            {/* Sao đỉnh */}
             <mesh position={[0, 3.2, 0]}>
                 <icosahedronGeometry args={[0.28, 1]} />
                 <meshStandardMaterial
@@ -72,20 +71,16 @@ function GalaxyTree() {
                 <pointLight intensity={16} distance={12} color="#ffd700" />
             </mesh>
 
-            {/* Particle cây */}
+            {/* Particle */}
             <points ref={pointsRef}>
                 <bufferGeometry>
                     <bufferAttribute
                         attach="attributes-position"
-                        array={positions}
-                        count={positions.length / 3}
-                        itemSize={3}
+                        args={[positions, 3]}
                     />
                     <bufferAttribute
                         attach="attributes-color"
-                        array={colors}
-                        count={colors.length / 3}
-                        itemSize={3}
+                        args={[colors, 3]}
                     />
                 </bufferGeometry>
 
@@ -100,14 +95,7 @@ function GalaxyTree() {
                 />
             </points>
 
-            {/* Lấp lánh phụ */}
-            <Sparkles
-                count={280}
-                scale={6}
-                size={2}
-                speed={0.35}
-                color="#ffffff"
-            />
+            <Sparkles count={280} scale={6} size={2} speed={0.35} />
         </group>
     )
 }
@@ -116,23 +104,18 @@ export default function Page() {
     return (
         <div className="h-screen w-full bg-[#020205]">
             <Canvas>
-                {/* Camera cinematic */}
                 <PerspectiveCamera makeDefault position={[0, 0.5, 11]} fov={42} />
 
-                {/* Không gian sao */}
                 <Stars radius={100} depth={50} count={4200} factor={4} fade />
 
-                {/* Ánh sáng */}
                 <ambientLight intensity={0.3} />
                 <directionalLight position={[6, 10, 4]} intensity={1} />
                 <pointLight position={[-4, 2, -3]} intensity={0.6} color="#88ccff" />
 
-                {/* Cây */}
                 <Float speed={1.4} floatIntensity={0.4} rotationIntensity={0.3}>
                     <GalaxyTree />
                 </Float>
 
-                {/* Điều khiển */}
                 <OrbitControls
                     enableZoom={false}
                     enablePan={false}
@@ -140,7 +123,6 @@ export default function Page() {
                     autoRotateSpeed={0.25}
                 />
 
-                {/* 🌟 Bloom dịu – đắt tiền */}
                 <EffectComposer>
                     <Bloom
                         intensity={1.2}
